@@ -2834,11 +2834,20 @@ impl Lock {
                 }
             }
         }
+        // Only retained artifacts can impose preview requirements on the lock.
+        let mut requires_preview_features = BTreeSet::new();
+        if packages
+            .iter()
+            .flat_map(|package| &package.wheels)
+            .any(|wheel| wheel.filename.variant().is_some())
+        {
+            requires_preview_features.insert(PreviewFeature::WheelVariants.to_string());
+        }
 
         let lock = Self {
             version,
             revision,
-            requires_preview_features: BTreeSet::new(),
+            requires_preview_features,
             fork_markers,
             conflicts,
             supported_environments,
@@ -6961,7 +6970,8 @@ impl TryFrom<LockWire> for Lock {
             required_environments,
             fork_markers,
         )?;
-        lock.requires_preview_features = wire.requires_preview_features;
+        lock.requires_preview_features
+            .extend(wire.requires_preview_features);
         Ok(lock)
     }
 }
