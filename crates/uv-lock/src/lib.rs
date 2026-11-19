@@ -7,5 +7,5 @@ pub use lock::{
     LockError, LockHashError, LockParseError, LockSatisfaction, LockSatisfactionError, Metadata,
     Package, PackageMap, PylockToml, PylockTomlError, PylockTomlErrorKind, PythonReport,
     RequirementsTxtExport, ResolverManifest, SelectedDependency, TreeDisplay, TreeJsonTarget,
-    cyclonedx_json, implicit_constraints_marker,
+    check_preview_features, cyclonedx_json, implicit_constraints_marker,
 };
