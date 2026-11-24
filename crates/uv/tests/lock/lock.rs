@@ -103,6 +103,7 @@ fn lock_without_package_metadata(lock: &str) -> Result<toml_edit::DocumentMut> {
     let Some(packages) = lock["package"].as_array_of_tables_mut() else {
         anyhow::bail!("lockfile did not contain a package array");
     };
+    let mut omitted_metadata = false;
     for package in packages.iter_mut() {
         let extras = package
             .get("metadata")
@@ -126,7 +127,11 @@ fn lock_without_package_metadata(lock: &str) -> Result<toml_edit::DocumentMut> {
                     .or_insert(toml_edit::value(toml_edit::Array::new()));
             }
         }
-        package.remove("metadata");
+        omitted_metadata |= package.remove("metadata").is_some();
+    }
+    if omitted_metadata {
+        lock["requires-preview-features"] =
+            toml_edit::value(toml_edit::Array::from_iter(["lock-without-metadata"]));
     }
     Ok(lock)
 }
@@ -21963,6 +21968,7 @@ fn lock_writes_without_package_metadata() -> Result<()> {
     version = 1
     revision = 5
     requires-python = ">=3.12"
+    requires-preview-features = ["lock-without-metadata"]
 
     [options]
     exclude-newer = "2024-03-25T00:00:00Z"
@@ -21990,11 +21996,20 @@ fn lock_writes_without_package_metadata() -> Result<()> {
     Resolved 1 package in [TIME]
     ");
 
-    // Re-lock without the preview feature, restoring the package metadata.
-    uv_snapshot!(context.filters(), context.lock().arg("--offline"), @"
+    uv_snapshot!(context.filters(), context.sync().args(["--frozen", "--offline"]), @"
+    exit_code: 1 (failure)
+    ----- stderr -----
+    error: The lockfile requires preview features that are not enabled: `lock-without-metadata`
+
+    hint: Pass `--preview-features lock-without-metadata` to use this lockfile, or run `uv sync --refresh` to regenerate it without preview features.
+    ");
+
+    // An explicit refresh restores the omitted metadata.
+    uv_snapshot!(context.filters(), context.sync().args(["--refresh", "--no-index"]), @"
     exit_code: 0 (success)
     ----- stderr -----
     Resolved 1 package in [TIME]
+    Checked in [TIME]
     ");
 
     let standard_lock = context.read("uv.lock");
@@ -22437,7 +22452,7 @@ fn lock_metadata_free_frozen_empty_extra() -> Result<()> {
     ");
 
     uv_snapshot!(context.filters(), context.export()
-        .arg("--frozen")
+        .args(["--frozen", "--preview-features", "lock-without-metadata"])
         .arg("--package")
         .arg("provider")
         .arg("--extra")
@@ -22946,7 +22961,7 @@ fn lock_metadata_free_nested_group_conditional_registry_constraint() -> Result<(
 
     uv_snapshot!(context.filters(), context.sync()
         .arg("--preview-features")
-        .arg("package-conflicts")
+        .arg("package-conflicts,lock-without-metadata")
         .arg("--frozen")
         .arg("--only-group")
         .arg("nested")
@@ -22962,7 +22977,7 @@ fn lock_metadata_free_nested_group_conditional_registry_constraint() -> Result<(
 
     uv_snapshot!(context.filters(), context.sync()
         .arg("--preview-features")
-        .arg("package-conflicts")
+        .arg("package-conflicts,lock-without-metadata")
         .arg("--frozen")
         .arg("--only-group")
         .arg("nested")
@@ -22979,7 +22994,7 @@ fn lock_metadata_free_nested_group_conditional_registry_constraint() -> Result<(
 
     uv_snapshot!(context.filters(), context.sync()
         .arg("--preview-features")
-        .arg("package-conflicts")
+        .arg("package-conflicts,lock-without-metadata")
         .arg("--frozen")
         .arg("--only-group")
         .arg("other")
@@ -23032,7 +23047,7 @@ fn lock_metadata_free_nested_group_conditional_registry_constraint() -> Result<(
 
     uv_snapshot!(context.filters(), context.sync()
         .arg("--preview-features")
-        .arg("package-conflicts")
+        .arg("package-conflicts,lock-without-metadata")
         .arg("--frozen")
         .arg("--only-group")
         .arg("other")
@@ -23648,7 +23663,8 @@ fn lock_metadata_free_frozen_preserves_recorded_selections() -> Result<()> {
     Installed 1 package in [TIME]
      + dependency==1.0.0 (from file://[TEMP_DIR]/dependency)
     ");
-    uv_snapshot!(context.filters(), context.sync().arg("--frozen").arg("--extra").arg("added"), @"
+    uv_snapshot!(context.filters(), context.sync()
+        .args(["--frozen", "--preview-features", "lock-without-metadata"]).arg("--extra").arg("added"), @"
     exit_code: 2 (failure)
     ----- stderr -----
     error: Extra `added` is not defined in the `optional-dependencies` table for `project`
@@ -23662,7 +23678,8 @@ fn lock_metadata_free_frozen_preserves_recorded_selections() -> Result<()> {
     ----- stderr -----
     Checked 1 package in [TIME]
     ");
-    uv_snapshot!(context.filters(), context.sync().arg("--frozen").arg("--group").arg("added"), @"
+    uv_snapshot!(context.filters(), context.sync()
+        .args(["--frozen", "--preview-features", "lock-without-metadata"]).arg("--group").arg("added"), @"
     exit_code: 2 (failure)
     ----- stderr -----
     error: Group `added` is not defined in the project's `dependency-groups` table
@@ -23681,23 +23698,27 @@ fn lock_metadata_free_frozen_preserves_recorded_selections() -> Result<()> {
     ");
     pyproject_toml.write_str(&original_pyproject.replace("original =", "added ="))?;
 
-    uv_snapshot!(context.filters(), context.sync().arg("--frozen").arg("--extra").arg("original"), @"
+    uv_snapshot!(context.filters(), context.sync()
+        .args(["--frozen", "--preview-features", "lock-without-metadata"]).arg("--extra").arg("original"), @"
     exit_code: 0 (success)
     ----- stderr -----
     Checked 1 package in [TIME]
     ");
-    uv_snapshot!(context.filters(), context.sync().arg("--frozen").arg("--extra").arg("added"), @"
+    uv_snapshot!(context.filters(), context.sync()
+        .args(["--frozen", "--preview-features", "lock-without-metadata"]).arg("--extra").arg("added"), @"
     exit_code: 2 (failure)
     ----- stderr -----
     error: Extra `added` is not defined in the `optional-dependencies` table for `project`
     ");
 
-    uv_snapshot!(context.filters(), context.sync().arg("--frozen").arg("--group").arg("original"), @"
+    uv_snapshot!(context.filters(), context.sync()
+        .args(["--frozen", "--preview-features", "lock-without-metadata"]).arg("--group").arg("original"), @"
     exit_code: 0 (success)
     ----- stderr -----
     Checked 1 package in [TIME]
     ");
-    uv_snapshot!(context.filters(), context.sync().arg("--frozen").arg("--group").arg("added"), @"
+    uv_snapshot!(context.filters(), context.sync()
+        .args(["--frozen", "--preview-features", "lock-without-metadata"]).arg("--group").arg("added"), @"
     exit_code: 2 (failure)
     ----- stderr -----
     error: Group `added` is not defined in the project's `dependency-groups` table
@@ -46321,6 +46342,7 @@ fn lock_resolution_inputs_recursive_extra_constraints() -> Result<()> {
         version = 1
         revision = 5
         requires-python = ">=3.12"
+        requires-preview-features = ["lock-without-metadata"]
 
         [options]
         exclude-newer = "2024-03-25T00:00:00Z"
@@ -46448,6 +46470,7 @@ fn lock_resolution_inputs_constraint_markers() -> Result<()> {
         version = 1
         revision = 5
         requires-python = ">=3.12"
+        requires-preview-features = ["lock-without-metadata"]
         resolution-markers = [
             "sys_platform == 'linux'",
             "sys_platform != 'linux'",
@@ -46533,6 +46556,7 @@ fn lock_resolution_inputs_constraint_markers() -> Result<()> {
         version = 1
         revision = 5
         requires-python = ">=3.12"
+        requires-preview-features = ["lock-without-metadata"]
         resolution-markers = [
             "sys_platform == 'linux'",
             "sys_platform != 'linux'",
@@ -46771,6 +46795,7 @@ fn lock_resolution_inputs_source_constraints() -> Result<()> {
         version = 1
         revision = 5
         requires-python = ">=3.12"
+        requires-preview-features = ["lock-without-metadata"]
 
         [options]
         exclude-newer = "2024-03-25T00:00:00Z"
@@ -47283,6 +47308,7 @@ fn lock_resolution_inputs_dynamic_constraints() -> Result<()> {
         version = 1
         revision = 5
         requires-python = ">=3.12"
+        requires-preview-features = ["lock-without-metadata"]
 
         [options]
         exclude-newer = "2024-03-25T00:00:00Z"
