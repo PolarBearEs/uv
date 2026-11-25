@@ -2511,6 +2511,11 @@
           "const": "aarch64-unknown-linux-gnu"
         },
         {
+          "description": "A 32-bit ARM (`armv7l`) Linux target with hardware floating point, e.g., 32-bit Raspberry Pi OS.\nEquivalent to `armv7l-manylinux_2_28`.",
+          "type": "string",
+          "const": "armv7-unknown-linux-gnueabihf"
+        },
+        {
           "description": "An ARM64 Linux target.",
           "type": "string",
           "const": "aarch64-unknown-linux-musl"
@@ -2669,6 +2674,71 @@
           "description": "An ARM64 target for the `manylinux_2_40` platform.",
           "type": "string",
           "const": "aarch64-manylinux_2_40"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux2014` platform. Equivalent to `armv7l-manylinux_2_17`.",
+          "type": "string",
+          "const": "armv7l-manylinux2014"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux_2_17` platform.",
+          "type": "string",
+          "const": "armv7l-manylinux_2_17"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux_2_28` platform.",
+          "type": "string",
+          "const": "armv7l-manylinux_2_28"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux_2_31` platform.",
+          "type": "string",
+          "const": "armv7l-manylinux_2_31"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux_2_32` platform.",
+          "type": "string",
+          "const": "armv7l-manylinux_2_32"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux_2_33` platform.",
+          "type": "string",
+          "const": "armv7l-manylinux_2_33"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux_2_34` platform.",
+          "type": "string",
+          "const": "armv7l-manylinux_2_34"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux_2_35` platform.",
+          "type": "string",
+          "const": "armv7l-manylinux_2_35"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux_2_36` platform.",
+          "type": "string",
+          "const": "armv7l-manylinux_2_36"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux_2_37` platform.",
+          "type": "string",
+          "const": "armv7l-manylinux_2_37"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux_2_38` platform.",
+          "type": "string",
+          "const": "armv7l-manylinux_2_38"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux_2_39` platform.",
+          "type": "string",
+          "const": "armv7l-manylinux_2_39"
+        },
+        {
+          "description": "An `armv7l` target for the `manylinux_2_40` platform.",
+          "type": "string",
+          "const": "armv7l-manylinux_2_40"
         },
         {
           "description": "An s390x target for the `manylinux2014` platform. Equivalent to `s390x-manylinux_2_17`.",
