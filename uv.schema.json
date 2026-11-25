@@ -2511,11 +2511,6 @@
           "const": "aarch64-unknown-linux-gnu"
         },
         {
-          "description": "A 32-bit ARM (`armv7l`) Linux target with hardware floating point, e.g., 32-bit Raspberry Pi OS.\nEquivalent to `armv7l-manylinux_2_28`.",
-          "type": "string",
-          "const": "armv7-unknown-linux-gnueabihf"
-        },
-        {
           "description": "An ARM64 Linux target.",
           "type": "string",
           "const": "aarch64-unknown-linux-musl"
@@ -2544,6 +2539,11 @@
           "description": "A RISCV64 Linux target.",
           "type": "string",
           "const": "riscv64-unknown-linux"
+        },
+        {
+          "description": "A 32-bit ARM (`armv7l`) hard-float Linux target. Equivalent to `armv7l-manylinux_2_31`.",
+          "type": "string",
+          "const": "armv7-unknown-linux-gnueabihf"
         },
         {
           "description": "An `x86_64` target for the `manylinux2014` platform. Equivalent to `x86_64-manylinux_2_17`.",

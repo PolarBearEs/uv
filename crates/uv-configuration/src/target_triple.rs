@@ -67,12 +67,6 @@ pub enum TargetTriple {
     #[serde(rename = "aarch64-unknown-linux-gnu")]
     Aarch64UnknownLinuxGnu,
 
-    /// A 32-bit ARM (`armv7l`) Linux target with hardware floating point, e.g., 32-bit Raspberry Pi OS.
-    /// Equivalent to `armv7l-manylinux_2_28`.
-    #[cfg_attr(feature = "clap", value(name = "armv7-unknown-linux-gnueabihf"))]
-    #[serde(rename = "armv7-unknown-linux-gnueabihf")]
-    Armv7UnknownLinuxGnueabihf,
-
     /// An ARM64 Linux target.
     #[cfg_attr(feature = "clap", value(name = "aarch64-unknown-linux-musl"))]
     #[serde(rename = "aarch64-unknown-linux-musl")]
@@ -106,6 +100,11 @@ pub enum TargetTriple {
     #[cfg_attr(feature = "clap", value(name = "riscv64-unknown-linux"))]
     #[serde(rename = "riscv64-unknown-linux")]
     Riscv64UnknownLinuxGnu,
+
+    /// A 32-bit ARM (`armv7l`) hard-float Linux target. Equivalent to `armv7l-manylinux_2_31`.
+    #[cfg_attr(feature = "clap", value(name = "armv7-unknown-linux-gnueabihf"))]
+    #[serde(rename = "armv7-unknown-linux-gnueabihf")]
+    Armv7UnknownLinuxGnueabihf,
 
     /// An `x86_64` target for the `manylinux2014` platform. Equivalent to `x86_64-manylinux_2_17`.
     #[cfg_attr(
@@ -373,6 +372,7 @@ pub enum TargetTriple {
     )]
     #[serde(rename = "armv7l-manylinux2014")]
     #[serde(alias = "manylinux2014_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux2014,
 
     /// An `armv7l` target for the `manylinux_2_17` platform.
@@ -381,8 +381,8 @@ pub enum TargetTriple {
         value(name = "armv7l-manylinux_2_17", alias = "manylinux_2_17_armv7l")
     )]
     #[serde(rename = "armv7l-manylinux_2_17")]
-    #[serde(alias = "armv7l-manylinux217")]
     #[serde(alias = "manylinux_2_17_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux217,
 
     /// An `armv7l` target for the `manylinux_2_28` platform.
@@ -391,8 +391,8 @@ pub enum TargetTriple {
         value(name = "armv7l-manylinux_2_28", alias = "manylinux_2_28_armv7l")
     )]
     #[serde(rename = "armv7l-manylinux_2_28")]
-    #[serde(alias = "armv7l-manylinux228")]
     #[serde(alias = "manylinux_2_28_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux228,
 
     /// An `armv7l` target for the `manylinux_2_31` platform.
@@ -401,8 +401,8 @@ pub enum TargetTriple {
         value(name = "armv7l-manylinux_2_31", alias = "manylinux_2_31_armv7l")
     )]
     #[serde(rename = "armv7l-manylinux_2_31")]
-    #[serde(alias = "armv7l-manylinux231")]
     #[serde(alias = "manylinux_2_31_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux231,
 
     /// An `armv7l` target for the `manylinux_2_32` platform.
@@ -411,8 +411,8 @@ pub enum TargetTriple {
         value(name = "armv7l-manylinux_2_32", alias = "manylinux_2_32_armv7l")
     )]
     #[serde(rename = "armv7l-manylinux_2_32")]
-    #[serde(alias = "armv7l-manylinux232")]
     #[serde(alias = "manylinux_2_32_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux232,
 
     /// An `armv7l` target for the `manylinux_2_33` platform.
@@ -421,8 +421,8 @@ pub enum TargetTriple {
         value(name = "armv7l-manylinux_2_33", alias = "manylinux_2_33_armv7l")
     )]
     #[serde(rename = "armv7l-manylinux_2_33")]
-    #[serde(alias = "armv7l-manylinux233")]
     #[serde(alias = "manylinux_2_33_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux233,
 
     /// An `armv7l` target for the `manylinux_2_34` platform.
@@ -431,8 +431,8 @@ pub enum TargetTriple {
         value(name = "armv7l-manylinux_2_34", alias = "manylinux_2_34_armv7l")
     )]
     #[serde(rename = "armv7l-manylinux_2_34")]
-    #[serde(alias = "armv7l-manylinux234")]
     #[serde(alias = "manylinux_2_34_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux234,
 
     /// An `armv7l` target for the `manylinux_2_35` platform.
@@ -441,8 +441,8 @@ pub enum TargetTriple {
         value(name = "armv7l-manylinux_2_35", alias = "manylinux_2_35_armv7l")
     )]
     #[serde(rename = "armv7l-manylinux_2_35")]
-    #[serde(alias = "armv7l-manylinux235")]
     #[serde(alias = "manylinux_2_35_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux235,
 
     /// An `armv7l` target for the `manylinux_2_36` platform.
@@ -451,8 +451,8 @@ pub enum TargetTriple {
         value(name = "armv7l-manylinux_2_36", alias = "manylinux_2_36_armv7l")
     )]
     #[serde(rename = "armv7l-manylinux_2_36")]
-    #[serde(alias = "armv7l-manylinux236")]
     #[serde(alias = "manylinux_2_36_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux236,
 
     /// An `armv7l` target for the `manylinux_2_37` platform.
@@ -461,8 +461,8 @@ pub enum TargetTriple {
         value(name = "armv7l-manylinux_2_37", alias = "manylinux_2_37_armv7l")
     )]
     #[serde(rename = "armv7l-manylinux_2_37")]
-    #[serde(alias = "armv7l-manylinux237")]
     #[serde(alias = "manylinux_2_37_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux237,
 
     /// An `armv7l` target for the `manylinux_2_38` platform.
@@ -471,8 +471,8 @@ pub enum TargetTriple {
         value(name = "armv7l-manylinux_2_38", alias = "manylinux_2_38_armv7l")
     )]
     #[serde(rename = "armv7l-manylinux_2_38")]
-    #[serde(alias = "armv7l-manylinux238")]
     #[serde(alias = "manylinux_2_38_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux238,
 
     /// An `armv7l` target for the `manylinux_2_39` platform.
@@ -481,8 +481,8 @@ pub enum TargetTriple {
         value(name = "armv7l-manylinux_2_39", alias = "manylinux_2_39_armv7l")
     )]
     #[serde(rename = "armv7l-manylinux_2_39")]
-    #[serde(alias = "armv7l-manylinux239")]
     #[serde(alias = "manylinux_2_39_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux239,
 
     /// An `armv7l` target for the `manylinux_2_40` platform.
@@ -491,8 +491,8 @@ pub enum TargetTriple {
         value(name = "armv7l-manylinux_2_40", alias = "manylinux_2_40_armv7l")
     )]
     #[serde(rename = "armv7l-manylinux_2_40")]
-    #[serde(alias = "armv7l-manylinux240")]
     #[serde(alias = "manylinux_2_40_armv7l")]
+    #[cfg_attr(feature = "clap", value(hide = true))]
     Armv7lManylinux240,
 
     /// An s390x target for the `manylinux2014` platform. Equivalent to `s390x-manylinux_2_17`.
@@ -906,13 +906,6 @@ impl TargetTriple {
                 },
                 Arch::Aarch64,
             ),
-            Self::Armv7UnknownLinuxGnueabihf => Platform::new(
-                Os::Manylinux {
-                    major: 2,
-                    minor: 28,
-                },
-                Arch::Armv7L,
-            ),
             Self::S390XUnknownLinuxGnu => Platform::new(
                 Os::Manylinux {
                     major: 2,
@@ -940,6 +933,13 @@ impl TargetTriple {
                     minor: 39,
                 },
                 Arch::Riscv64,
+            ),
+            Self::Armv7UnknownLinuxGnueabihf => Platform::new(
+                Os::Manylinux {
+                    major: 2,
+                    minor: 31,
+                },
+                Arch::Armv7L,
             ),
             Self::Aarch64UnknownLinuxMusl => {
                 Platform::new(Os::Musllinux { major: 1, minor: 2 }, Arch::Aarch64)
@@ -1520,10 +1520,10 @@ impl TargetTriple {
             Self::I686PcWindowsMsvc => "x86",
             Self::X8664AppleDarwin => "x86_64",
             Self::Aarch64UnknownLinuxGnu => "aarch64",
-            Self::Armv7UnknownLinuxGnueabihf => "armv7l",
             Self::Aarch64UnknownLinuxMusl => "aarch64",
             Self::X8664UnknownLinuxMusl => "x86_64",
             Self::Riscv64UnknownLinuxGnu => "riscv64",
+            Self::Armv7UnknownLinuxGnueabihf => "armv7l",
             Self::S390XUnknownLinuxGnu => "s390x",
             Self::Powerpc64LeUnknownLinuxGnu => "ppc64le",
             Self::LoongArch64UnknownLinuxGnu => "loongarch64",
@@ -1617,10 +1617,10 @@ impl TargetTriple {
             Self::I686PcWindowsMsvc => "Windows",
             Self::X8664AppleDarwin => "Darwin",
             Self::Aarch64UnknownLinuxGnu => "Linux",
-            Self::Armv7UnknownLinuxGnueabihf => "Linux",
             Self::Aarch64UnknownLinuxMusl => "Linux",
             Self::X8664UnknownLinuxMusl => "Linux",
             Self::Riscv64UnknownLinuxGnu => "Linux",
+            Self::Armv7UnknownLinuxGnueabihf => "Linux",
             Self::S390XUnknownLinuxGnu => "Linux",
             Self::Powerpc64LeUnknownLinuxGnu => "Linux",
             Self::LoongArch64UnknownLinuxGnu => "Linux",
@@ -1714,10 +1714,10 @@ impl TargetTriple {
             Self::I686PcWindowsMsvc => "",
             Self::X8664AppleDarwin => "",
             Self::Aarch64UnknownLinuxGnu => "",
-            Self::Armv7UnknownLinuxGnueabihf => "",
             Self::Aarch64UnknownLinuxMusl => "",
             Self::X8664UnknownLinuxMusl => "",
             Self::Riscv64UnknownLinuxGnu => "",
+            Self::Armv7UnknownLinuxGnueabihf => "",
             Self::S390XUnknownLinuxGnu => "",
             Self::Powerpc64LeUnknownLinuxGnu => "",
             Self::LoongArch64UnknownLinuxGnu => "",
@@ -1814,10 +1814,10 @@ impl TargetTriple {
             Self::I686PcWindowsMsvc => "",
             Self::X8664AppleDarwin => "",
             Self::Aarch64UnknownLinuxGnu => "",
-            Self::Armv7UnknownLinuxGnueabihf => "",
             Self::Aarch64UnknownLinuxMusl => "",
             Self::X8664UnknownLinuxMusl => "",
             Self::Riscv64UnknownLinuxGnu => "",
+            Self::Armv7UnknownLinuxGnueabihf => "",
             Self::S390XUnknownLinuxGnu => "",
             Self::Powerpc64LeUnknownLinuxGnu => "",
             Self::LoongArch64UnknownLinuxGnu => "",
@@ -1914,10 +1914,10 @@ impl TargetTriple {
             Self::I686PcWindowsMsvc => "nt",
             Self::X8664AppleDarwin => "posix",
             Self::Aarch64UnknownLinuxGnu => "posix",
-            Self::Armv7UnknownLinuxGnueabihf => "posix",
             Self::Aarch64UnknownLinuxMusl => "posix",
             Self::X8664UnknownLinuxMusl => "posix",
             Self::Riscv64UnknownLinuxGnu => "posix",
+            Self::Armv7UnknownLinuxGnueabihf => "posix",
             Self::S390XUnknownLinuxGnu => "posix",
             Self::Powerpc64LeUnknownLinuxGnu => "posix",
             Self::LoongArch64UnknownLinuxGnu => "posix",
@@ -2011,10 +2011,10 @@ impl TargetTriple {
             Self::I686PcWindowsMsvc => "win32",
             Self::X8664AppleDarwin => "darwin",
             Self::Aarch64UnknownLinuxGnu => "linux",
-            Self::Armv7UnknownLinuxGnueabihf => "linux",
             Self::Aarch64UnknownLinuxMusl => "linux",
             Self::X8664UnknownLinuxMusl => "linux",
             Self::Riscv64UnknownLinuxGnu => "linux",
+            Self::Armv7UnknownLinuxGnueabihf => "linux",
             Self::S390XUnknownLinuxGnu => "linux",
             Self::Powerpc64LeUnknownLinuxGnu => "linux",
             Self::LoongArch64UnknownLinuxGnu => "linux",
@@ -2108,10 +2108,10 @@ impl TargetTriple {
             Self::I686PcWindowsMsvc => false,
             Self::X8664AppleDarwin => false,
             Self::Aarch64UnknownLinuxGnu => true,
-            Self::Armv7UnknownLinuxGnueabihf => true,
             Self::Aarch64UnknownLinuxMusl => true,
             Self::X8664UnknownLinuxMusl => true,
             Self::Riscv64UnknownLinuxGnu => true,
+            Self::Armv7UnknownLinuxGnueabihf => true,
             Self::S390XUnknownLinuxGnu => true,
             Self::Powerpc64LeUnknownLinuxGnu => true,
             Self::LoongArch64UnknownLinuxGnu => true,
